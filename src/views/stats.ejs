@@ -43,3 +43,26 @@
   </div>
 </body>
 </html>
+
+      </li>
+    </ul>
+
+    <a href="/" class="btn btn-secondary">← Quay lại</a>
+  </div>
+  <script>
+    const btn = document.getElementById('toggleUrlBtn');
+    const link = document.getElementById('originalUrlLink');
+    let expanded = false;
+    btn.addEventListener('click', function() {
+      expanded = !expanded;
+      if (expanded) {
+        link.classList.add('full-url');
+        btn.textContent = 'Thu gọn';
+      } else {
+        link.classList.remove('full-url');
+        btn.textContent = 'Hiện thêm';
+      }
+    });
+  </script>
+</body>
+</html>

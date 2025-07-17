@@ -12,6 +12,23 @@
       text-overflow: ellipsis;
       display: inline-block;
       vertical-align: middle;
+      transition: max-width 0.2s;
+    }
+    .full-url {
+      max-width: none !important;
+      white-space: normal !important;
+      overflow: visible !important;
+      text-overflow: unset !important;
+      word-break: break-all !important;
+    }
+    table.table-fixed {
+      table-layout: fixed;
+      width: 100%;
+    }
+    th.original-url-col, td.original-url-col {
+      width: 300px;
+      min-width: 200px;
+      max-width: 400px;
     }
   </style>
 </head>
@@ -24,19 +41,22 @@
       <button type="submit" class="btn btn-primary">Rút gọn</button>
     </form>
 
-    <table class="table table-bordered table-hover bg-white shadow-sm">
+    <table class="table table-bordered table-hover bg-white shadow-sm table-fixed">
       <thead class="table-dark">
         <tr>
-          <th>Original URL</th>
+          <th class="original-url-col">Original URL</th>
           <th>Short URL</th>
           <th>Clicks</th>
           <th>Thống kê</th>
         </tr>
       </thead>
       <tbody>
-        <% urls.forEach(u => { %>
+        <% urls.forEach((u, idx) => { %>
           <tr>
-            <td><a href="<%= u.originalUrl %>" target="_blank" class="truncate-url" title="<%= u.originalUrl %>"><%= u.originalUrl %></a></td>
+            <td class="original-url-col">
+              <a href="<%= u.originalUrl %>" target="_blank" class="truncate-url" title="<%= u.originalUrl %>" id="originalUrlLink-<%= idx %>"><%= u.originalUrl %></a>
+              <button type="button" class="btn btn-link btn-sm p-0 ms-2 toggleUrlBtn" data-idx="<%= idx %>">Hiện thêm</button>
+            </td>
             <td><a href="<%= baseUrl + '/' + u.shortCode %>" target="_blank"><%= baseUrl + '/' + u.shortCode %></a></td>
             <td><%= u.clicks %></td>
             <td><a href="/<%= u.shortCode %>/stats" class="btn btn-sm btn-info">Xem</a></td>
@@ -45,5 +65,22 @@
       </tbody>
     </table>
   </div>
+  <script>
+    document.querySelectorAll('.toggleUrlBtn').forEach(function(btn) {
+      const idx = btn.getAttribute('data-idx');
+      const link = document.getElementById('originalUrlLink-' + idx);
+      let expanded = false;
+      btn.addEventListener('click', function() {
+        expanded = !expanded;
+        if (expanded) {
+          link.classList.add('full-url');
+          btn.textContent = 'Thu gọn';
+        } else {
+          link.classList.remove('full-url');
+          btn.textContent = 'Hiện thêm';
+        }
+      });
+    });
+  </script>
 </body>
 </html>
