@@ -1,0 +1,3 @@
+node_modules
+#Tuyệt đối không đẩy file tham số "môi trường" (.env) lên git
+.env

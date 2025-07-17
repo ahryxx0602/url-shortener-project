@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Thống kê <%= url.shortCode %></title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body class="bg-light">
+  <div class="container py-5">
+    <h1 class="mb-4">📊 Thống kê cho mã: <code><%= url.shortCode %></code></h1>
+    
+    <ul class="list-group mb-4">
+      <li class="list-group-item">
+        <strong>Original URL:</strong>
+        <a href="<%= url.originalUrl %>" target="_blank"><%= url.originalUrl %></a>
+      </li>
+      <li class="list-group-item">
+        <strong>Short URL:</strong>
+        <a href="<%= baseUrl + '/' + url.shortCode %>" target="_blank"><%= baseUrl + '/' + url.shortCode %></a>
+      </li>
+      <li class="list-group-item">
+        <strong>Số lượt click:</strong> <%= url.clicks %>
+      </li>
+      <li class="list-group-item">
+        <strong>Ngày tạo:</strong> <%= url.createdAt.toLocaleString() %>
+      </li>
+      <li class="list-group-item">
+        <strong>Hết hạn sau:</strong> <%= process.env.EXPIRATION_DAYS %> ngày kể từ khi tạo
+      </li>
+    </ul>
+
+    <a href="/" class="btn btn-secondary">← Quay lại</a>
+  </div>
+</body>
+</html>
