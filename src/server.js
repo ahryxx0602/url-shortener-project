@@ -1,37 +1,33 @@
-// server.js
-require("dotenv").config();
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
-const urlRoutes = require("./routes/urlRoutes");
+// src/server.js
+import express from "express";
+import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
+import urlRoutes from "./routes/urlRoutes.js";
+import { config, connectDB } from "./config/config.js";
 
 const app = express();
+
+// ESM xử lý __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Middlewares
 app.use(cors());
 app.use(express.json());
-app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 
-const path = require("path");
-// ...
-
+// View Engine
 app.set("view engine", "ejs");
-// Thêm dòng này ngay sau khi set view engine:
 app.set("views", path.join(__dirname, "views"));
 
-app.use(express.urlencoded({ extended: true }));
-
-// Connect MongoDB
-mongoose
-  .connect(process.env.MONGO_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("✅ Connected to MongoDB"))
-  .catch((err) => console.error("❌ MongoDB connection error:", err));
+// MongoDB
+connectDB();
 
 // Routes
 app.use("/", urlRoutes);
 
 // Start server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(config.port, () =>
+  console.log(`🚀 Server running on port ${config.port}`)
+);

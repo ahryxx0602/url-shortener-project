@@ -1,18 +1,16 @@
-// routes/urlRoutes.js
-const express = require("express");
+import express from "express";
+import {
+  showForm,
+  createShortUrl,
+  redirect,
+  showStats,
+} from "../controllers/urlController.js";
+
 const router = express.Router();
-const urlController = require("../controllers/urlController");
 
-// Trang chính + form tạo
-router.get("/", urlController.showForm);
+router.get("/", showForm);
+router.post("/shorten", createShortUrl);
+router.get("/:shortCode", redirect);
+router.get("/:shortCode/stats", showStats);
 
-// Xử lý tạo link ngắn
-router.post("/shorten", urlController.createShortUrl);
-
-// Chuyển hướng
-router.get("/:shortCode", urlController.redirect);
-
-// Thống kê click
-router.get("/:shortCode/stats", urlController.showStats);
-
-module.exports = router;
+export default router;

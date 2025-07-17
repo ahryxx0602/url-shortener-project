@@ -1,32 +1,30 @@
-// controllers/urlController.js
-const Url = require("../models/Url");
-const { nanoid } = require("nanoid");
-const validator = require("validator");
+import Url from "../models/Url.js";
+import { nanoid } from "nanoid";
+import validator from "validator";
 
-exports.showForm = async (req, res) => {
-  // Lấy toàn bộ URL để hiển thị
+export const showForm = async (req, res) => {
   const urls = await Url.find().sort({ createdAt: -1 });
   res.render("index", { urls, baseUrl: process.env.BASE_URL });
 };
 
-exports.createShortUrl = async (req, res) => {
+export const createShortUrl = async (req, res) => {
   const { originalUrl } = req.body;
-  // Validate URL
   if (!validator.isURL(originalUrl, { require_protocol: true })) {
     return res
       .status(400)
       .send("URL không hợp lệ. Phải bắt đầu bằng http:// hoặc https://");
   }
-  // Nếu đã tồn tại, không tạo mới
+
   let url = await Url.findOne({ originalUrl });
   if (!url) {
     const shortCode = nanoid(7);
     url = await Url.create({ originalUrl, shortCode });
   }
+
   res.redirect("/");
 };
 
-exports.redirect = async (req, res) => {
+export const redirect = async (req, res) => {
   const { shortCode } = req.params;
   const url = await Url.findOne({ shortCode });
   if (!url) {
@@ -37,7 +35,7 @@ exports.redirect = async (req, res) => {
   res.redirect(url.originalUrl);
 };
 
-exports.showStats = async (req, res) => {
+export const showStats = async (req, res) => {
   const { shortCode } = req.params;
   const url = await Url.findOne({ shortCode });
   if (!url) {
@@ -45,6 +43,6 @@ exports.showStats = async (req, res) => {
   }
   res.render("stats", {
     url,
-    baseUrl: process.env.BASE_URL, // thêm dòng này
+    baseUrl: process.env.BASE_URL,
   });
 };

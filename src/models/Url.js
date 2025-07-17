@@ -1,5 +1,4 @@
-// models/Url.js
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const urlSchema = new mongoose.Schema({
   originalUrl: { type: String, required: true },
@@ -12,5 +11,5 @@ const urlSchema = new mongoose.Schema({
   },
 });
 
-// Khi thêm `expires` trên createdAt, MongoDB sẽ tự xóa document sau X ngày
-module.exports = mongoose.model("Url", urlSchema);
+const Url = mongoose.model("Url", urlSchema);
+export default Url;
